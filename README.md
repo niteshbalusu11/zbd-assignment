@@ -1,12 +1,18 @@
 ### Running the App
 
-```
-# clone the repo
 
-npm i
-
-npm start
-```
 
 ### Using docker
-`docker compose up`
+```
+# Clone the repo
+
+git clone https://github.com/niteshbalusu11/zbd-assignment.git
+
+cd zbd-assignment
+
+docker compose up -d
+
+# Access grafana dashboard on
+localhost:3001
+```
+
