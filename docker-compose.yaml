@@ -1,0 +1,7 @@
+version: '3'
+services:
+  zbd:
+    container_name: zbd
+    build: .
+    ports:
+      - "3000:3000"

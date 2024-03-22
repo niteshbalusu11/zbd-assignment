@@ -3,6 +3,7 @@ import fastifyMetrics from 'fastify-metrics';
 
 const app = Fastify();
 
+// Return some metrics for simulation
 app.register(fastifyMetrics, {
 	endpoint: '/metrics',
 	metrics: {
@@ -14,25 +15,15 @@ app.register(fastifyMetrics, {
 	},
 });
 
-let customMetricValue = 0;
 
-// Health endpoint
+app.get('/', (request, reply) => {
+	reply.send({ message: "yo" })
+});
+
 app.get('/health', (request, reply) => {
 	reply.send({ status: 'OK', message: "I'm healthy" });
 });
 
-app.get('/trigger', (request, reply) => {
-	// Simulate some work or processing
-	const delay = Math.random() * 1000;
-	setTimeout(() => {
-		customMetricValue++;
-		reply.send({ message: 'Triggered custom metric' });
-	}, delay);
-});
-
-app.get('/custom-metric', (request, reply) => {
-	reply.send({ customMetricValue });
-});
 
 app.listen({ port: 3000 }, (err, address) => {
 	if (err) {
