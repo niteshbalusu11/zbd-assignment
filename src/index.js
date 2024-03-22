@@ -25,7 +25,7 @@ app.get('/health', (request, reply) => {
 });
 
 
-app.listen({ port: 3000 }, (err, address) => {
+app.listen({ host: '0.0.0.0', port: 3000 }, (err, address) => {
 	if (err) {
 		console.error(err);
 		process.exit(1);
