@@ -7,31 +7,32 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Deploy to EC2
-      env:
-        HOST: ${{ secrets.EC2_HOST }}
-        USER: ${{ secrets.EC2_USER }}
-        KEY: ${{ secrets.AWS_PRIVATE_KEY}}
-      run: |
-        mkdir -p ~/.ssh
-        echo "$KEY" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh -o StrictHostKeyChecking=no $USER@$HOST '
-          repo_name="zbd-assignment"
-          if [ ! -d "$repo_name" ]; then
-            git clone https://github.com/niteshbalusu11/zbd-assignment.git
-          fi
-          cd $repo_name
-          git pull origin master
-          ls -al /usr/local/bin
-          sudo chmod +x /usr/local/bin/docker-compose
-          sudo chown $USER /var/run/docker.sock
-          docker-compose down
-          docker-compose build --no-cache
-          docker-compose up -d
-        '
+      - name: Deploy to EC2
+        env:
+          HOST: ${{ secrets.EC2_HOST }}
+          USER: ${{ secrets.EC2_USER }}
+          KEY: ${{ secrets.AWS_PRIVATE_KEY}}
+          GRAFANA_ADMIN_USER: ${{ secrets.GRAFANA_ADMIN_USER }}
+          GRAFANA_ADMIN_PASSWORD: ${{ secrets.GRAFANA_ADMIN_PASSWORD }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh -o StrictHostKeyChecking=no $USER@$HOST '
+            repo_name="zbd-assignment"
+            if [ ! -d "$repo_name" ]; then
+              git clone https://github.com/niteshbalusu11/zbd-assignment.git
+            fi
+            cd $repo_name
+            git pull origin master
+            ls -al /usr/local/bin
+            sudo chmod +x /usr/local/bin/docker-compose
+            sudo chown $USER /var/run/docker.sock
+            GRAFANA_ADMIN_USER=${{ secrets.GRAFANA_ADMIN_USER }} GRAFANA_ADMIN_PASSWORD=${{ secrets.GRAFANA_ADMIN_PASSWORD }} docker-compose down
+            GRAFANA_ADMIN_USER=${{ secrets.GRAFANA_ADMIN_USER }} GRAFANA_ADMIN_PASSWORD=${{ secrets.GRAFANA_ADMIN_PASSWORD }} docker-compose build --no-cache
+            GRAFANA_ADMIN_USER=${{ secrets.GRAFANA_ADMIN_USER }} GRAFANA_ADMIN_PASSWORD=${{ secrets.GRAFANA_ADMIN_PASSWORD }} docker-compose up -d
+          '
