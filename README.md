@@ -10,6 +10,9 @@ git clone https://github.com/niteshbalusu11/zbd-assignment.git
 
 cd zbd-assignment
 
+# Pass GF_SECURITY_ADMIN_USER and GF_SECURITY_ADMIN_PASSWORD as env variables
+# For authenticating into grafana
+
 docker compose up -d
 
 # Access grafana dashboard on
