@@ -49,7 +49,6 @@ resource "aws_instance" "zbd" {
               sudo systemctl enable docker
               sudo systemctl start docker
               sudo curl -L "https://github.com/docker/compose/releases/download/v2.26.0/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose
-              sudo chmod +x /usr/local/bin/docker-compose
               sudo chown $USER /var/run/docker.sock
               EOF
 }
